@@ -1,5 +1,7 @@
 # ms-ts
 
+[![npm](https://img.shields.io/npm/v/ms-ts)](https://www.npmjs.com/package/ms-ts)
+
 An alternative to [`ms` library](https://www.npmjs.com/package/ms) in the type world: exposes a `Ms` utility type which for a string in `ms` time format produces a number of milliseconds as a type.
 
 ```ts
@@ -21,7 +23,7 @@ const config = {
 
 ## Installation
 
-For npm, yarn & pnpm users respectively ([npm page](https://www.npmjs.com/package/ms-ts)):
+For npm, yarn & pnpm users respectively:
 
 ```shell
 npm i ms-ts
