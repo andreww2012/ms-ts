@@ -1,0 +1,69 @@
+{
+  "version": "0.0.0",
+  "name": "ms-ts",
+  "description": "ms as a TypeScript type.",
+  "scripts": {
+    "lint:eslint": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --cache",
+    "lint:eslint:quiet": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --quiet --cache",
+    "lint:eslint:nocache": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
+    "lint:eslint:fix": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --fix",
+    "lint:eslint:fix:quiet": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --quiet --fix",
+    "lint:types": "tsc --noEmit",
+    "format:check": "prettier --check **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
+    "format:fix": "prettier --write **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
+    "lint": "npm run format:check && npm run lint:types && npm run lint:eslint:nocache",
+    "test:tsd": "tsd",
+    "test": "npm run lint && npm run test:tsd",
+    "build": "rimraf dist && tsup src/index.ts --dts --treeshake --format esm,cjs --target=node14",
+    "prepublishOnly": "npm run test && npm run build",
+    "release": "release-it"
+  },
+  "homepage": "https://github.com/andreww2012/ms-ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreww2012/ms-ts"
+  },
+  "bugs": {
+    "url": "https://github.com/andreww2012/ms-ts/issues/new"
+  },
+  "keywords": [
+    "ms",
+    "millisecond",
+    "milliseconds"
+  ],
+  "author": "andreww2012",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "endOfLine": "lf"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-unicorn": "^48.0.1",
+    "prettier": "^3.0.3",
+    "release-it": "^16.1.5",
+    "rimraf": "^5.0.1",
+    "tsd": "^0.29.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "ts-arithmetic": "^0.1.1",
+    "type-fest": "^4.3.1"
+  }
+}

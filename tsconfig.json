@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 16",
+  "_version": "16.1.0",
+
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "module": "ES2015",
+    "moduleResolution": "Node10",
+    "target": "es2021",
+
+    "outDir": "dist",
+
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "verbatimModuleSyntax": true
+  },
+
+  "include": ["src/**/*.d.ts"],
+  "exclude": ["test-d"]
+}
