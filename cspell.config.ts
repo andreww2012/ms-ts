@@ -10,7 +10,7 @@ export default {
   dictionaries: ['npm'],
   useGitignore: true,
   enableGlobDot: true,
-  ignorePaths: ['pnpm-lock.yaml', '**/.gitignore', '**/.git/**'],
+  ignorePaths: ['pnpm-lock.yaml', '**/.gitignore', '**/.git/**', '.all-contributorsrc'],
   overrides: [],
   words: Object.values(GLOBALLY_IGNORED_WORDS).flat(),
 } satisfies CSpellSettings;

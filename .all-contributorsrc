@@ -9,7 +9,23 @@
   "imageSize": 70,
   "commit": false,
   "commitConvention": "angular",
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "andreww2012",
+      "name": "Andrew Kazakov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6554045?v=4",
+      "profile": "https://github.com/andreww2012",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "infra",
+        "maintenance",
+        "test",
+        "tool"
+      ]
+    }
+  ],
   "contributorsPerLine": 7,
   "linkToUsage": true
 }
