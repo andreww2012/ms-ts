@@ -1,4 +1,4 @@
-import type {Ms, AllUnits} from './ms';
+import type {AllUnits, Ms} from './ms';
 
 export const ms = <S extends `${number}${AllUnits}`>(milliseconds: Ms<S>) => milliseconds;
 

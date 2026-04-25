@@ -1,69 +1,91 @@
 {
-  "version": "0.0.1",
   "name": "ms-ts",
+  "version": "0.0.1",
   "description": "ms as a TypeScript type.",
-  "scripts": {
-    "lint:eslint": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --cache",
-    "lint:eslint:quiet": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --quiet --cache",
-    "lint:eslint:nocache": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
-    "lint:eslint:fix": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --fix",
-    "lint:eslint:fix:quiet": "eslint **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts} --quiet --fix",
-    "lint:types": "tsc --noEmit",
-    "format:check": "prettier --check **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
-    "format:fix": "prettier --write **/*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}",
-    "lint": "npm run format:check && npm run lint:types && npm run lint:eslint:nocache",
-    "test:tsd": "tsd",
-    "test": "npm run lint && npm run test:tsd",
-    "build": "rimraf dist && tsup src/index.ts --dts --treeshake --format esm,cjs --target=node14",
-    "prepublishOnly": "npm run test && npm run build",
-    "release": "release-it"
-  },
-  "homepage": "https://github.com/andreww2012/ms-ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/andreww2012/ms-ts"
-  },
-  "bugs": {
-    "url": "https://github.com/andreww2012/ms-ts/issues/new"
-  },
   "keywords": [
     "ms",
     "millisecond",
     "milliseconds"
   ],
-  "author": "andreww2012",
-  "license": "MIT",
-  "engines": {
-    "node": ">=14.0.0"
+  "homepage": "https://github.com/andreww2012/ms-ts",
+  "bugs": {
+    "url": "https://github.com/andreww2012/ms-ts/issues/new"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreww2012/ms-ts"
+  },
+  "license": "MIT",
+  "author": "andreww2012",
   "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "bracketSpacing": false,
-    "endOfLine": "lf"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.6.0",
-    "eslint": "^8.49.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-unicorn": "^48.0.1",
-    "prettier": "^3.0.3",
-    "release-it": "^16.1.5",
-    "rimraf": "^5.0.1",
-    "tsd": "^0.29.0",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+  "scripts": {
+    "u": "ncu",
+    "u:m": "ncu -t minor",
+    "u:pm": "ncu --dep packageManager",
+    "deps:audit": "pnpm audit --audit-level high",
+    "deps:dedupe-check": "pnpm dedupe --check",
+    "spellcheck": "cspell --no-progress --no-summary .",
+    "format:check": "prettier --check . --log-level warn",
+    "format:fix": "prettier --write . --log-level warn",
+    "eslint:inspect": "eslint-config-inspector --open false",
+    "lint:eslint": "eslint --cache --concurrency auto",
+    "lint:types": "tsc --noEmit",
+    "lint:types:go": "tsgo --noEmit",
+    "lint:public-types": "attw --pack . --profile esm-only",
+    "lint": "nr format:check && nr lint:types:go && nr lint:eslint",
+    "lint:fix": "nr format:fix && nr lint:eslint:fix",
+    "knip": "knip --no-progress",
+    "test:tsd": "tsd",
+    "test:common": "nr knip && nr spellcheck && nr lint && nr test:tsd",
+    "test": "nr deps:audit && nr test:common",
+    "build": "tsdown --clean",
+    "ch": "npx changeset add --message \"___REPLACE_ME___\"",
+    "release": "changeset publish",
+    "prepublishOnly": "nr deps:dedupe-check && nr test && nr build && nr lint:public-types",
+    "prepack": "nr build"
   },
   "dependencies": {
     "ts-arithmetic": "^0.1.1",
     "type-fest": "^4.3.1"
+  },
+  "devDependencies": {
+    "@antfu/ni": "30.1.0",
+    "@arethetypeswrong/cli": "0.18.2",
+    "@changesets/cli": "2.31.0",
+    "@commitlint/cli": "20.5.2",
+    "@commitlint/config-conventional": "20.5.0",
+    "@commitlint/types": "20.5.0",
+    "@e18e/eslint-plugin": "0.3.0",
+    "@eslint/config-inspector": "2.0.0",
+    "@types/node": "22.19.17",
+    "@typescript/native-preview": "7.0.0-dev.20260424.2",
+    "cspell": "10.0.0",
+    "eslint": "10.2.1",
+    "eslint-config-un": "1.0.0-beta.8",
+    "eslint-plugin-lockfile": "1.1.0",
+    "eslint-plugin-sentences-per-line": "0.1.2",
+    "knip": "6.7.0",
+    "lefthook": "2.1.6",
+    "npm-check-updates": "22.0.1",
+    "prettier": "3.8.3",
+    "semver": "7.7.4",
+    "tsd": "0.33.0",
+    "tsdown": "0.21.10",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=22"
   }
 }

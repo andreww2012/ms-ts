@@ -4,6 +4,8 @@
 
 An alternative to [`ms` library](https://www.npmjs.com/package/ms) in the type world: exposes a `Ms` utility type which for a string in `ms` time format produces a number of milliseconds as a type.
 
+<!-- eslint-skip -->
+
 ```ts
 import {type Ms, ms} from 'ms-ts';
 
@@ -25,7 +27,7 @@ const config = {
 
 For npm, yarn & pnpm users respectively:
 
-```shell
+```sh
 npm i ms-ts
 
 yarn add ms-ts
@@ -33,11 +35,11 @@ yarn add ms-ts
 pnpm i ms-ts
 ```
 
-Minimum supported Node.js version is 14.
+Minimum supported Node.js version is 22.
 
 ## Features
 
-* Supported units:
+- Supported units:
   - `ms`, `msec(s)`, `millisecond(s)`
   - `s`, `sec(s)`, `second(s)`
   - `m`, `min(s)`, `minute(s)`
@@ -45,12 +47,12 @@ Minimum supported Node.js version is 14.
   - `d`, `day(s)`
   - `w`, `week(s)`
   - `y`, `yr(s)`, `year(s)` (**365.25** days, as in the [original implementation](https://github.com/vercel/ms/blob/78ce59eab01c197b9133bf9752ae01fbc11f4976/src/index.ts#LL7C15-L7C21))
-* Supports negative & floating point numbers.
-* Ignores whitespaces in the beginnig and end of the input string and between the number and the unit.
-* Ignores leading zeroes.
-* If parsing fails, returns `never` as the result.
-* It does **not** performs an inverse conversion (number of milliseconds to a string with a unit).
-* Check more usage examples in `test-d` directory of the repository.
+- Supports negative & floating point numbers.
+- Ignores whitespaces in the beginning and end of the input string and between the number and the unit.
+- Ignores leading zeroes.
+- If parsing fails, returns `never` as the result.
+- It does **not** performs an inverse conversion (number of milliseconds to a string with a unit).
+- Check more usage examples in `test-d` directory of the repository.
 
 ## Recommended usage & pitfalls
 
@@ -64,7 +66,7 @@ For type-checking to work in expressions, **always** use [`satisfies` operator](
 
 ```ts
 const config = {
-  duration1: 2_520_000 satisfies Ms<'42m'>, // ✅ Always use `satisfies` in expresions to assert a type
+  duration1: 2_520_000 satisfies Ms<'42m'>, // ✅ Always use `satisfies` in expressions to assert a type
   duration2: 1 as Ms<'42m'>, // ❌ Avoid using `as`! No error!
 };
 ```

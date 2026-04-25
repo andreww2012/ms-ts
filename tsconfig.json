@@ -1,23 +1,28 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Node 16",
-  "_version": "16.1.0",
-
   "compilerOptions": {
-    "lib": ["es2021"],
-    "module": "ES2015",
-    "moduleResolution": "Node10",
-    "target": "es2021",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
-    "outDir": "dist",
-
-    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "types": [],
+
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    "declaration": true,
+    "module": "preserve",
+    "noEmit": true,
+
+    "lib": ["es2022"]
   },
 
-  "include": ["src/**/*.d.ts"],
-  "exclude": ["test-d"]
+  "include": ["src"],
 }

@@ -27,6 +27,7 @@ type AllUnitsLowercase = keyof PostfixesToMilliseconds;
 export type AllUnits =
   | AllUnitsLowercase
   | Uppercase<AllUnitsLowercase>
+  // eslint-disable-next-line ts/no-duplicate-type-constituents -- false positive
   | Lowercase<AllUnitsLowercase>;
 
 /* Number parsers */
@@ -54,31 +55,31 @@ type ParseFloat<
   ? First extends ' '
     ? ParseFloat<Rest, Parsed, Negative>
     : First extends '-'
-    ? Negative extends true
-      ? never
-      : ParseFloat<Rest, Parsed, true>
-    : First extends '.'
-    ? ParseFraction<Rest, `${Parsed}${First}`, Negative>
-    : First extends `${infer Digit}`
-    ? IsFirstCharDigit<Digit> extends true
-      ? ParseFloat<Rest, `${Parsed}${Digit}`, Negative>
-      : [Parsed extends '' ? never : Negative extends true ? `-${Parsed}` : Parsed, T]
-    : [Parsed extends '' ? never : Negative extends true ? `-${Parsed}` : Parsed, T]
+      ? Negative extends true
+        ? never
+        : ParseFloat<Rest, Parsed, true>
+      : First extends '.'
+        ? ParseFraction<Rest, `${Parsed}${First}`, Negative>
+        : First extends `${infer Digit}`
+          ? IsFirstCharDigit<Digit> extends true
+            ? ParseFloat<Rest, `${Parsed}${Digit}`, Negative>
+            : [Parsed extends '' ? never : Negative extends true ? `-${Parsed}` : Parsed, T]
+          : [Parsed extends '' ? never : Negative extends true ? `-${Parsed}` : Parsed, T]
   : [Parsed extends '' ? never : Negative extends true ? `-${Parsed}` : Parsed, ''];
 
 type ParseInt<T> = T extends '-0'
   ? 0
   : T extends `-0${NonEmptyString<infer N>}`
-  ? ParseInt<`-${N}`>
-  : T extends `0${NonEmptyString<infer N>}`
-  ? ParseInt<N>
-  : T extends ` ${NonEmptyString<infer N>}`
-  ? ParseInt<N>
-  : T extends `${NonEmptyString<infer N>} `
-  ? ParseInt<N>
-  : T extends `${infer N extends number}`
-  ? N
-  : never;
+    ? ParseInt<`-${N}`>
+    : T extends `0${NonEmptyString<infer N>}`
+      ? ParseInt<N>
+      : T extends ` ${NonEmptyString<infer N>}`
+        ? ParseInt<N>
+        : T extends `${NonEmptyString<infer N>} `
+          ? ParseInt<N>
+          : T extends `${infer N extends number}`
+            ? N
+            : never;
 
 /* Internal type */
 

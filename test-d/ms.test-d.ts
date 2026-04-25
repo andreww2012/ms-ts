@@ -1,9 +1,10 @@
-import {expectType, expectNotType} from 'tsd';
+/* eslint-disable un/no-multiple-consecutive-spaces */
+import {expectNotType, expectType} from 'tsd';
 import type {Ms} from '../src/ms';
 
-/****************/
+/** ************* */
 /* MILLISECONDS */
-/****************/
+/** ************* */
 
 expectType<Ms<'0ms'>>(0);
 expectNotType<Ms<'0ms'>>(1);
@@ -62,9 +63,9 @@ expectNotType<Ms<'--ms'>>(0);
 expectNotType<Ms<'--42ms'>>(-42);
 expectNotType<Ms<'42mss'>>(42);
 
-/***********/
+/** ******** */
 /* SECONDS */
-/***********/
+/** ******** */
 
 expectType<Ms<'0s'>>(0);
 expectNotType<Ms<'0s'>>(1);
@@ -109,9 +110,9 @@ expectNotType<Ms<'--s'>>(0);
 expectNotType<Ms<'--42s'>>(-42_000);
 expectNotType<Ms<'42ss'>>(42_000);
 
-/***********/
+/** ******** */
 /* MINUTES */
-/***********/
+/** ******** */
 
 expectType<Ms<'0m'>>(0);
 expectNotType<Ms<'0m'>>(1);
@@ -156,9 +157,9 @@ expectNotType<Ms<'--m'>>(0);
 expectNotType<Ms<'--42m'>>(-2_520_000);
 expectNotType<Ms<'42ms'>>(2_520_000);
 
-/*********/
+/** ****** */
 /* HOURS */
-/*********/
+/** ****** */
 
 expectType<Ms<'0h'>>(0);
 expectNotType<Ms<'0h'>>(1);
@@ -203,9 +204,9 @@ expectNotType<Ms<'--h'>>(0);
 expectNotType<Ms<'--42h'>>(-151_200_000);
 expectNotType<Ms<'42hs'>>(151_200_000);
 
-/********/
+/** ***** */
 /* DAYS */
-/********/
+/** ***** */
 
 expectType<Ms<'0d'>>(0);
 expectNotType<Ms<'0d'>>(1);
@@ -248,9 +249,9 @@ expectNotType<Ms<'--d'>>(0);
 expectNotType<Ms<'--42d'>>(-3_628_800_000);
 expectNotType<Ms<'42ds'>>(3_628_800_000);
 
-/*********/
+/** ****** */
 /* WEEKS */
-/*********/
+/** ****** */
 
 expectType<Ms<'0w'>>(0);
 expectNotType<Ms<'0w'>>(1);
@@ -293,9 +294,9 @@ expectNotType<Ms<'--w'>>(0);
 expectNotType<Ms<'--42w'>>(-25_401_600_000);
 expectNotType<Ms<'42ws'>>(25_401_600_000);
 
-/*********/
+/** ****** */
 /* YEARS */
-/*********/
+/** ****** */
 
 expectType<Ms<'0y'>>(0);
 expectNotType<Ms<'0y'>>(1);
