@@ -1,0 +1,78 @@
+name: Check code
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    name: Install dependencies
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+
+  knip:
+    name: Knip
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm knip
+  spellcheck:
+    name: Spellcheck (cspell)
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm spellcheck
+  formatting:
+    name: Formatting check (prettier)
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm format:check
+  typecheck:
+    name: Typecheck (tsgo)
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm lint:types:go
+  eslint:
+    name: ESLint
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm lint:eslint
+  test:
+    name: Test (Node ${{ matrix.node-version }}
+    needs: install
+    strategy:
+      matrix:
+        node-version: [22, 24, 25]
+    uses: ./.github/workflows/ci-matrix-tests.yml
+    with:
+      node-version: ${{ matrix.node-version }}
+  build:
+    name: Build (tsdown) & lint public types (attw)
+    needs: install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: |
+          # `pnpm lint:public-types` uses `attw --pack` which internally calls `npm pack`.
+          # The runner's bundled npm may have broken internal deps, causing `npm pack` to fail.
+          # Pack via pnpm instead and pass the tarball directly to attw.
+          pnpm pack --pack-destination /tmp
+          pnpm exec attw /tmp/ms-ts-*.tgz --profile esm-only
