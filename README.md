@@ -81,3 +81,19 @@ const config = {
 ---
 
 <sup>1</sup> An identity function is a function that returns its first argument and does nothing else: `fn = (v) => v`.
+
+## Contributors
+
+<!-- eslint-disable markdown-preferences/padding-line-between-blocks -->
+<!-- cspell:disable -->
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<!-- eslint-enable markdown-preferences/padding-line-between-blocks -->
+
+<!-- cspell:enable -->

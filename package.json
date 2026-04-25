@@ -30,6 +30,8 @@
     "dist"
   ],
   "scripts": {
+    "contrib:add": "all-contributors add",
+    "contrib:gen": "all-contributors generate",
     "u": "ncu",
     "u:m": "ncu -t minor",
     "u:pm": "ncu --dep packageManager",
@@ -70,6 +72,7 @@
     "@eslint/config-inspector": "2.0.0",
     "@types/node": "22.19.17",
     "@typescript/native-preview": "7.0.0-dev.20260424.2",
+    "all-contributors-cli": "6.26.1",
     "cspell": "10.0.0",
     "eslint": "10.2.1",
     "eslint-config-un": "1.0.0-beta.8",
