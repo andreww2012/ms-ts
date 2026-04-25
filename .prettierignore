@@ -1,4 +1,4 @@
 *.html
 *.json
 pnpm-lock.yaml
-.all-contributorsrc
+.*
