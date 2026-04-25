@@ -1,8 +1,8 @@
 # ms-ts
 
-[![npm](https://img.shields.io/npm/v/ms-ts)](https://www.npmjs.com/package/ms-ts)
+[![package version and a link to the npmx page](https://img.shields.io/npm/v/ms-ts)](https://npmx.dev/ms-ts)
 
-An alternative to [the `ms` library](https://www.npmjs.com/package/ms) in the type world: exposes a `Ms` utility type which, for a string in `ms` time format, produces the number of milliseconds as a type.
+An alternative to [the `ms` library](https://npmx.dev/ms) in the type world: exposes a `Ms` utility type which, for a string in `ms` time format, produces the number of milliseconds as a type.
 
 ```ts
 import {type Ms, ms} from 'ms-ts';
