@@ -48,8 +48,8 @@
     "lint": "nr format:check && nr lint:types:go && nr lint:eslint",
     "lint:fix": "nr format:fix && nr lint:eslint:fix",
     "knip": "knip --no-progress",
-    "test:tsd": "tsd",
-    "test:common": "nr knip && nr spellcheck && nr lint && nr test:tsd",
+    "test:types": "vitest run --typecheck",
+    "test:common": "nr knip && nr spellcheck && nr lint && nr test:types",
     "test": "nr deps:audit && nr test:common",
     "build": "tsdown --clean",
     "ch": "npx changeset add --message \"___REPLACE_ME___\"",
@@ -72,6 +72,7 @@
     "@eslint/config-inspector": "2.0.0",
     "@types/node": "22.19.17",
     "@typescript/native-preview": "7.0.0-dev.20260424.2",
+    "@vitest/eslint-plugin": "1.6.16",
     "all-contributors-cli": "6.26.1",
     "cspell": "10.0.0",
     "eslint": "10.2.1",
@@ -84,9 +85,9 @@
     "npm-check-updates": "22.0.1",
     "prettier": "3.8.3",
     "semver": "7.7.4",
-    "tsd": "0.33.0",
     "tsdown": "0.21.10",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "4.1.5"
   },
   "packageManager": "pnpm@10.33.2",
   "engines": {

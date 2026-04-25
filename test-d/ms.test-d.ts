@@ -1,342 +1,405 @@
 /* eslint-disable un/no-multiple-consecutive-spaces */
-import {expectNotType, expectType} from 'tsd';
 import type {Ms} from '../src/ms';
 
-/** ************* */
-/* MILLISECONDS */
-/** ************* */
-
-expectType<Ms<'0ms'>>(0);
-expectNotType<Ms<'0ms'>>(1);
-
-expectType<Ms<'1ms'>>(1);
-expectNotType<Ms<'1ms'>>(10);
-
-expectType<Ms<'3.14ms'>>(3.14);
-expectNotType<Ms<'3.14ms'>>(4);
-expectNotType<Ms<'3.14ms'>>(3);
-
-expectType<Ms<'42ms'>>(42);
-expectNotType<Ms<'42ms'>>(41);
-
-expectType<Ms<'-42ms'>>(-42);
-expectNotType<Ms<'-42ms'>>(42);
-
-expectType<Ms<'- 42ms'>>(-42);
-expectNotType<Ms<'- 42ms'>>(42);
-
-expectType<Ms<'-   42ms'>>(-42);
-expectNotType<Ms<'-   42ms'>>(42);
-
-expectType<Ms<'1234msec'>>(1234);
-expectType<Ms<'1234msecs'>>(1234);
-expectType<Ms<'1234millisecond'>>(1234);
-expectType<Ms<'1234milliseconds'>>(1234);
-expectType<Ms<'1234 msec'>>(1234);
-expectType<Ms<'1234 msecs'>>(1234);
-expectType<Ms<'1234 millisecond'>>(1234);
-expectType<Ms<'1234 milliseconds'>>(1234);
-expectType<Ms<'1234   msec'>>(1234);
-expectType<Ms<'1234   msecs'>>(1234);
-expectType<Ms<'1234   millisecond'>>(1234);
-expectType<Ms<'1234   milliseconds'>>(1234);
-
-// Trimming (including leading zeroes)
-expectType<Ms<'-01ms'>>(-1);
-expectType<Ms<'-0ms'>>(0);
-expectType<Ms<'-00ms'>>(0);
-expectType<Ms<'-000ms'>>(0);
-expectType<Ms<' -000ms'>>(0);
-expectType<Ms<'  010ms'>>(10);
-expectType<Ms<'  -010ms'>>(-10);
-expectType<Ms<'-01ms '>>(-1);
-expectType<Ms<'-0ms '>>(0);
-expectType<Ms<'-00ms '>>(0);
-expectType<Ms<'-000ms '>>(0);
-expectType<Ms<' -000ms  '>>(0);
-expectType<Ms<'  010ms  '>>(10);
-expectType<Ms<'  -010ms  '>>(-10);
-
-// Invalid
-expectNotType<Ms<'ms'>>(0);
-expectNotType<Ms<'--ms'>>(0);
-expectNotType<Ms<'--42ms'>>(-42);
-expectNotType<Ms<'42mss'>>(42);
-
-/** ******** */
-/* SECONDS */
-/** ******** */
-
-expectType<Ms<'0s'>>(0);
-expectNotType<Ms<'0s'>>(1);
-
-expectType<Ms<'-0s'>>(0);
-expectType<Ms<'-000s'>>(0);
-expectNotType<Ms<'-0s'>>(1);
-expectNotType<Ms<'-000s'>>(1);
-
-expectType<Ms<'1s'>>(1000);
-expectNotType<Ms<'1s'>>(2000);
-
-expectType<Ms<'001s'>>(1000);
-expectNotType<Ms<'001s'>>(-1000);
-
-expectType<Ms<'-001s'>>(-1000);
-expectNotType<Ms<'-001s'>>(1000);
-
-expectType<Ms<'3.14s'>>(3140);
-expectNotType<Ms<'3.14s'>>(-3140);
-
-expectType<Ms<'-3.14s'>>(-3140);
-expectNotType<Ms<'-3.14s'>>(3140);
-
-expectType<Ms<'42s'>>(42_000);
-expectNotType<Ms<'42s'>>(-42_000);
-
-expectType<Ms<'-42s'>>(-42_000);
-expectNotType<Ms<'-42s'>>(42_000);
-
-expectType<Ms<'1234 s'>>(1_234_000);
-expectType<Ms<'1234 sec'>>(1_234_000);
-expectType<Ms<'1234 secs'>>(1_234_000);
-expectType<Ms<'1234 second'>>(1_234_000);
-expectType<Ms<'1234 seconds'>>(1_234_000);
-expectType<Ms<'1234   seconds'>>(1_234_000);
-expectType<Ms<'   1234   seconds   '>>(1_234_000);
-
-// Invalid
-expectNotType<Ms<'s'>>(0);
-expectNotType<Ms<'--s'>>(0);
-expectNotType<Ms<'--42s'>>(-42_000);
-expectNotType<Ms<'42ss'>>(42_000);
-
-/** ******** */
-/* MINUTES */
-/** ******** */
-
-expectType<Ms<'0m'>>(0);
-expectNotType<Ms<'0m'>>(1);
-
-expectType<Ms<'-0m'>>(0);
-expectType<Ms<'-000m'>>(0);
-expectNotType<Ms<'-0m'>>(1);
-expectNotType<Ms<'-000m'>>(1);
-
-expectType<Ms<'1m'>>(60_000);
-expectNotType<Ms<'1m'>>(-60_000);
-
-expectType<Ms<'001m'>>(60_000);
-expectNotType<Ms<'001m'>>(-60_000);
-
-expectType<Ms<'-001m'>>(-60_000);
-expectNotType<Ms<'-001m'>>(60_000);
-
-expectType<Ms<'3.14m'>>(188_400);
-expectNotType<Ms<'3.14m'>>(-188_400);
-
-expectType<Ms<'-3.14m'>>(-188_400);
-expectNotType<Ms<'-3.14m'>>(188_400);
-
-expectType<Ms<'42m'>>(2_520_000);
-expectNotType<Ms<'42m'>>(-2_520_000);
-
-expectType<Ms<'-42m'>>(-2_520_000);
-expectNotType<Ms<'-42m'>>(2_520_000);
-
-expectType<Ms<'1234 m'>>(74_040_000);
-expectType<Ms<'1234 min'>>(74_040_000);
-expectType<Ms<'1234 mins'>>(74_040_000);
-expectType<Ms<'1234 minute'>>(74_040_000);
-expectType<Ms<'1234 minutes'>>(74_040_000);
-expectType<Ms<'1234   minutes'>>(74_040_000);
-expectType<Ms<'   1234   minutes   '>>(74_040_000);
-
-// Invalid
-expectNotType<Ms<'m'>>(0);
-expectNotType<Ms<'--m'>>(0);
-expectNotType<Ms<'--42m'>>(-2_520_000);
-expectNotType<Ms<'42ms'>>(2_520_000);
-
-/** ****** */
-/* HOURS */
-/** ****** */
-
-expectType<Ms<'0h'>>(0);
-expectNotType<Ms<'0h'>>(1);
-
-expectType<Ms<'-0h'>>(0);
-expectType<Ms<'-000h'>>(0);
-expectNotType<Ms<'-0h'>>(1);
-expectNotType<Ms<'-000h'>>(1);
-
-expectType<Ms<'1h'>>(3_600_000);
-expectNotType<Ms<'1h'>>(-3_600_000);
-
-expectType<Ms<'001h'>>(3_600_000);
-expectNotType<Ms<'001h'>>(-3_600_000);
-
-expectType<Ms<'-001h'>>(-3_600_000);
-expectNotType<Ms<'-001h'>>(3_600_000);
-
-expectType<Ms<'3.14h'>>(11_304_000);
-expectNotType<Ms<'3.14h'>>(-11_304_000);
-
-expectType<Ms<'-3.14h'>>(-11_304_000);
-expectNotType<Ms<'-3.14h'>>(11_304_000);
-
-expectType<Ms<'42h'>>(151_200_000);
-expectNotType<Ms<'42h'>>(-151_200_000);
-
-expectType<Ms<'-42h'>>(-151_200_000);
-expectNotType<Ms<'-42h'>>(151_200_000);
-
-expectType<Ms<'1234 h'>>(4_442_400_000);
-expectType<Ms<'1234 hr'>>(4_442_400_000);
-expectType<Ms<'1234 hrs'>>(4_442_400_000);
-expectType<Ms<'1234 hour'>>(4_442_400_000);
-expectType<Ms<'1234 hours'>>(4_442_400_000);
-expectType<Ms<'1234   hours'>>(4_442_400_000);
-expectType<Ms<'   1234   hours   '>>(4_442_400_000);
-
-// Invalid
-expectNotType<Ms<'h'>>(0);
-expectNotType<Ms<'--h'>>(0);
-expectNotType<Ms<'--42h'>>(-151_200_000);
-expectNotType<Ms<'42hs'>>(151_200_000);
-
-/** ***** */
-/* DAYS */
-/** ***** */
-
-expectType<Ms<'0d'>>(0);
-expectNotType<Ms<'0d'>>(1);
-
-expectType<Ms<'-0d'>>(0);
-expectType<Ms<'-000d'>>(0);
-expectNotType<Ms<'-0d'>>(1);
-expectNotType<Ms<'-000d'>>(1);
-
-expectType<Ms<'1d'>>(86_400_000);
-expectNotType<Ms<'1d'>>(-86_400_000);
-
-expectType<Ms<'001d'>>(86_400_000);
-expectNotType<Ms<'001d'>>(-86_400_000);
-
-expectType<Ms<'-001d'>>(-86_400_000);
-expectNotType<Ms<'-001d'>>(86_400_000);
-
-expectType<Ms<'3.14d'>>(271_296_000);
-expectNotType<Ms<'3.14d'>>(-271_296_000);
-
-expectType<Ms<'-3.14d'>>(-271_296_000);
-expectNotType<Ms<'-3.14d'>>(271_296_000);
-
-expectType<Ms<'42d'>>(3_628_800_000);
-expectNotType<Ms<'42d'>>(-3_628_800_000);
-
-expectType<Ms<'-42d'>>(-3_628_800_000);
-expectNotType<Ms<'-42d'>>(3_628_800_000);
-
-expectType<Ms<'1234 d'>>(106_617_600_000);
-expectType<Ms<'1234 day'>>(106_617_600_000);
-expectType<Ms<'1234 days'>>(106_617_600_000);
-expectType<Ms<'1234   days'>>(106_617_600_000);
-expectType<Ms<'   1234   days   '>>(106_617_600_000);
-
-// Invalid
-expectNotType<Ms<'d'>>(0);
-expectNotType<Ms<'--d'>>(0);
-expectNotType<Ms<'--42d'>>(-3_628_800_000);
-expectNotType<Ms<'42ds'>>(3_628_800_000);
-
-/** ****** */
-/* WEEKS */
-/** ****** */
-
-expectType<Ms<'0w'>>(0);
-expectNotType<Ms<'0w'>>(1);
-
-expectType<Ms<'-0w'>>(0);
-expectType<Ms<'-000w'>>(0);
-expectNotType<Ms<'-0w'>>(1);
-expectNotType<Ms<'-000w'>>(1);
-
-expectType<Ms<'1w'>>(604_800_000);
-expectNotType<Ms<'1w'>>(-604_800_000);
-
-expectType<Ms<'001w'>>(604_800_000);
-expectNotType<Ms<'001w'>>(-604_800_000);
-
-expectType<Ms<'-001w'>>(-604_800_000);
-expectNotType<Ms<'-001w'>>(604_800_000);
-
-expectType<Ms<'3.14w'>>(1_899_072_000);
-expectNotType<Ms<'3.14w'>>(-1_899_072_000);
-
-expectType<Ms<'-3.14w'>>(-1_899_072_000);
-expectNotType<Ms<'-3.14w'>>(1_899_072_000);
-
-expectType<Ms<'42w'>>(25_401_600_000);
-expectNotType<Ms<'42w'>>(-25_401_600_000);
-
-expectType<Ms<'-42w'>>(-25_401_600_000);
-expectNotType<Ms<'-42w'>>(25_401_600_000);
-
-expectType<Ms<'1234 w'>>(746_323_200_000);
-expectType<Ms<'1234 week'>>(746_323_200_000);
-expectType<Ms<'1234 weeks'>>(746_323_200_000);
-expectType<Ms<'1234   weeks'>>(746_323_200_000);
-expectType<Ms<'   1234   weeks   '>>(746_323_200_000);
-
-// Invalid
-expectNotType<Ms<'w'>>(0);
-expectNotType<Ms<'--w'>>(0);
-expectNotType<Ms<'--42w'>>(-25_401_600_000);
-expectNotType<Ms<'42ws'>>(25_401_600_000);
-
-/** ****** */
-/* YEARS */
-/** ****** */
-
-expectType<Ms<'0y'>>(0);
-expectNotType<Ms<'0y'>>(1);
-
-expectType<Ms<'-0y'>>(0);
-expectType<Ms<'-000y'>>(0);
-expectNotType<Ms<'-0y'>>(1);
-expectNotType<Ms<'-000y'>>(1);
-
-expectType<Ms<'1y'>>(31_557_600_000);
-expectNotType<Ms<'1y'>>(-31_557_600_000);
-
-expectType<Ms<'001y'>>(31_557_600_000);
-expectNotType<Ms<'001y'>>(-31_557_600_000);
-
-expectType<Ms<'-001y'>>(-31_557_600_000);
-expectNotType<Ms<'-001y'>>(31_557_600_000);
-
-expectType<Ms<'3.14y'>>(99_090_864_000);
-expectNotType<Ms<'3.14y'>>(-99_090_864_000);
-
-expectType<Ms<'-3.14y'>>(-99_090_864_000);
-expectNotType<Ms<'-3.14y'>>(99_090_864_000);
-
-expectType<Ms<'42y'>>(1_325_419_200_000);
-expectNotType<Ms<'42y'>>(-1_325_419_200_000);
-
-expectType<Ms<'-42y'>>(-1_325_419_200_000);
-expectNotType<Ms<'-42y'>>(1_325_419_200_000);
-
-expectType<Ms<'1234 y'>>(38_942_078_400_000);
-expectType<Ms<'1234 yr'>>(38_942_078_400_000);
-expectType<Ms<'1234 yrs'>>(38_942_078_400_000);
-expectType<Ms<'1234 year'>>(38_942_078_400_000);
-expectType<Ms<'1234 years'>>(38_942_078_400_000);
-expectType<Ms<'1234   years'>>(38_942_078_400_000);
-expectType<Ms<'   1234   years   '>>(38_942_078_400_000);
-
-// Invalid
-expectNotType<Ms<'y'>>(0);
-expectNotType<Ms<'--y'>>(0);
-expectNotType<Ms<'--42y'>>(-1_325_419_200_000);
-expectNotType<Ms<'42ys'>>(1_325_419_200_000);
+describe('milliseconds', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0ms'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0ms'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(1 as const).toEqualTypeOf<Ms<'1ms'>>();
+    expectTypeOf(10 as const).not.toEqualTypeOf<Ms<'1ms'>>();
+
+    expectTypeOf(42 as const).toEqualTypeOf<Ms<'42ms'>>();
+    expectTypeOf(41 as const).not.toEqualTypeOf<Ms<'42ms'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(3.14 as const).toEqualTypeOf<Ms<'3.14ms'>>();
+    expectTypeOf(4 as const).not.toEqualTypeOf<Ms<'3.14ms'>>();
+    expectTypeOf(3 as const).not.toEqualTypeOf<Ms<'3.14ms'>>();
+  });
+
+  it('negative', () => {
+    expectTypeOf(-42 as const).toEqualTypeOf<Ms<'-42ms'>>();
+    expectTypeOf(42 as const).not.toEqualTypeOf<Ms<'-42ms'>>();
+
+    expectTypeOf(-42 as const).toEqualTypeOf<Ms<'- 42ms'>>();
+    expectTypeOf(42 as const).not.toEqualTypeOf<Ms<'- 42ms'>>();
+
+    expectTypeOf(-42 as const).toEqualTypeOf<Ms<'-   42ms'>>();
+    expectTypeOf(42 as const).not.toEqualTypeOf<Ms<'-   42ms'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234msec'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234msecs'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234millisecond'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234milliseconds'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234 msec'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234 msecs'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234 millisecond'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234 milliseconds'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234   msec'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234   msecs'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234   millisecond'>>();
+    expectTypeOf(1234 as const).toEqualTypeOf<Ms<'1234   milliseconds'>>();
+  });
+
+  it('trimming', () => {
+    expectTypeOf(-1 as const).toEqualTypeOf<Ms<'-01ms'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0ms'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-00ms'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000ms'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<' -000ms'>>();
+    expectTypeOf(10 as const).toEqualTypeOf<Ms<'  010ms'>>();
+    expectTypeOf(-10 as const).toEqualTypeOf<Ms<'  -010ms'>>();
+    expectTypeOf(-1 as const).toEqualTypeOf<Ms<'-01ms '>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0ms '>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-00ms '>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000ms '>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<' -000ms  '>>();
+    expectTypeOf(10 as const).toEqualTypeOf<Ms<'  010ms  '>>();
+    expectTypeOf(-10 as const).toEqualTypeOf<Ms<'  -010ms  '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'ms'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--ms'>>();
+    expectTypeOf(-42 as const).not.toEqualTypeOf<Ms<'--42ms'>>();
+    expectTypeOf(42 as const).not.toEqualTypeOf<Ms<'42mss'>>();
+  });
+});
+
+describe('seconds', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0s'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0s'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0s'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000s'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0s'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000s'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(1000 as const).toEqualTypeOf<Ms<'1s'>>();
+    expectTypeOf(2000 as const).not.toEqualTypeOf<Ms<'1s'>>();
+
+    expectTypeOf(1000 as const).toEqualTypeOf<Ms<'001s'>>();
+    expectTypeOf(-1000 as const).not.toEqualTypeOf<Ms<'001s'>>();
+
+    expectTypeOf(42_000 as const).toEqualTypeOf<Ms<'42s'>>();
+    expectTypeOf(-42_000 as const).not.toEqualTypeOf<Ms<'42s'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-1000 as const).toEqualTypeOf<Ms<'-001s'>>();
+    expectTypeOf(1000 as const).not.toEqualTypeOf<Ms<'-001s'>>();
+
+    expectTypeOf(-42_000 as const).toEqualTypeOf<Ms<'-42s'>>();
+    expectTypeOf(42_000 as const).not.toEqualTypeOf<Ms<'-42s'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(3140 as const).toEqualTypeOf<Ms<'3.14s'>>();
+    expectTypeOf(-3140 as const).not.toEqualTypeOf<Ms<'3.14s'>>();
+
+    expectTypeOf(-3140 as const).toEqualTypeOf<Ms<'-3.14s'>>();
+    expectTypeOf(3140 as const).not.toEqualTypeOf<Ms<'-3.14s'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234 s'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234 sec'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234 secs'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234 second'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234 seconds'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'1234   seconds'>>();
+    expectTypeOf(1_234_000 as const).toEqualTypeOf<Ms<'   1234   seconds   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'s'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--s'>>();
+    expectTypeOf(-42_000 as const).not.toEqualTypeOf<Ms<'--42s'>>();
+    expectTypeOf(42_000 as const).not.toEqualTypeOf<Ms<'42ss'>>();
+  });
+});
+
+describe('minutes', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0m'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0m'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0m'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000m'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0m'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000m'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(60_000 as const).toEqualTypeOf<Ms<'1m'>>();
+    expectTypeOf(-60_000 as const).not.toEqualTypeOf<Ms<'1m'>>();
+
+    expectTypeOf(60_000 as const).toEqualTypeOf<Ms<'001m'>>();
+    expectTypeOf(-60_000 as const).not.toEqualTypeOf<Ms<'001m'>>();
+
+    expectTypeOf(2_520_000 as const).toEqualTypeOf<Ms<'42m'>>();
+    expectTypeOf(-2_520_000 as const).not.toEqualTypeOf<Ms<'42m'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-60_000 as const).toEqualTypeOf<Ms<'-001m'>>();
+    expectTypeOf(60_000 as const).not.toEqualTypeOf<Ms<'-001m'>>();
+
+    expectTypeOf(-2_520_000 as const).toEqualTypeOf<Ms<'-42m'>>();
+    expectTypeOf(2_520_000 as const).not.toEqualTypeOf<Ms<'-42m'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(188_400 as const).toEqualTypeOf<Ms<'3.14m'>>();
+    expectTypeOf(-188_400 as const).not.toEqualTypeOf<Ms<'3.14m'>>();
+
+    expectTypeOf(-188_400 as const).toEqualTypeOf<Ms<'-3.14m'>>();
+    expectTypeOf(188_400 as const).not.toEqualTypeOf<Ms<'-3.14m'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234 m'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234 min'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234 mins'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234 minute'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234 minutes'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'1234   minutes'>>();
+    expectTypeOf(74_040_000 as const).toEqualTypeOf<Ms<'   1234   minutes   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'m'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--m'>>();
+    expectTypeOf(-2_520_000 as const).not.toEqualTypeOf<Ms<'--42m'>>();
+    expectTypeOf(2_520_000 as const).not.toEqualTypeOf<Ms<'42ms'>>();
+  });
+});
+
+describe('hours', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0h'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0h'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0h'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000h'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0h'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000h'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(3_600_000 as const).toEqualTypeOf<Ms<'1h'>>();
+    expectTypeOf(-3_600_000 as const).not.toEqualTypeOf<Ms<'1h'>>();
+
+    expectTypeOf(3_600_000 as const).toEqualTypeOf<Ms<'001h'>>();
+    expectTypeOf(-3_600_000 as const).not.toEqualTypeOf<Ms<'001h'>>();
+
+    expectTypeOf(151_200_000 as const).toEqualTypeOf<Ms<'42h'>>();
+    expectTypeOf(-151_200_000 as const).not.toEqualTypeOf<Ms<'42h'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-3_600_000 as const).toEqualTypeOf<Ms<'-001h'>>();
+    expectTypeOf(3_600_000 as const).not.toEqualTypeOf<Ms<'-001h'>>();
+
+    expectTypeOf(-151_200_000 as const).toEqualTypeOf<Ms<'-42h'>>();
+    expectTypeOf(151_200_000 as const).not.toEqualTypeOf<Ms<'-42h'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(11_304_000 as const).toEqualTypeOf<Ms<'3.14h'>>();
+    expectTypeOf(-11_304_000 as const).not.toEqualTypeOf<Ms<'3.14h'>>();
+
+    expectTypeOf(-11_304_000 as const).toEqualTypeOf<Ms<'-3.14h'>>();
+    expectTypeOf(11_304_000 as const).not.toEqualTypeOf<Ms<'-3.14h'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234 h'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234 hr'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234 hrs'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234 hour'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234 hours'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'1234   hours'>>();
+    expectTypeOf(4_442_400_000 as const).toEqualTypeOf<Ms<'   1234   hours   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'h'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--h'>>();
+    expectTypeOf(-151_200_000 as const).not.toEqualTypeOf<Ms<'--42h'>>();
+    expectTypeOf(151_200_000 as const).not.toEqualTypeOf<Ms<'42hs'>>();
+  });
+});
+
+describe('days', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0d'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0d'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0d'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000d'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0d'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000d'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(86_400_000 as const).toEqualTypeOf<Ms<'1d'>>();
+    expectTypeOf(-86_400_000 as const).not.toEqualTypeOf<Ms<'1d'>>();
+
+    expectTypeOf(86_400_000 as const).toEqualTypeOf<Ms<'001d'>>();
+    expectTypeOf(-86_400_000 as const).not.toEqualTypeOf<Ms<'001d'>>();
+
+    expectTypeOf(3_628_800_000 as const).toEqualTypeOf<Ms<'42d'>>();
+    expectTypeOf(-3_628_800_000 as const).not.toEqualTypeOf<Ms<'42d'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-86_400_000 as const).toEqualTypeOf<Ms<'-001d'>>();
+    expectTypeOf(86_400_000 as const).not.toEqualTypeOf<Ms<'-001d'>>();
+
+    expectTypeOf(-3_628_800_000 as const).toEqualTypeOf<Ms<'-42d'>>();
+    expectTypeOf(3_628_800_000 as const).not.toEqualTypeOf<Ms<'-42d'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(271_296_000 as const).toEqualTypeOf<Ms<'3.14d'>>();
+    expectTypeOf(-271_296_000 as const).not.toEqualTypeOf<Ms<'3.14d'>>();
+
+    expectTypeOf(-271_296_000 as const).toEqualTypeOf<Ms<'-3.14d'>>();
+    expectTypeOf(271_296_000 as const).not.toEqualTypeOf<Ms<'-3.14d'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(106_617_600_000 as const).toEqualTypeOf<Ms<'1234 d'>>();
+    expectTypeOf(106_617_600_000 as const).toEqualTypeOf<Ms<'1234 day'>>();
+    expectTypeOf(106_617_600_000 as const).toEqualTypeOf<Ms<'1234 days'>>();
+    expectTypeOf(106_617_600_000 as const).toEqualTypeOf<Ms<'1234   days'>>();
+    expectTypeOf(106_617_600_000 as const).toEqualTypeOf<Ms<'   1234   days   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'d'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--d'>>();
+    expectTypeOf(-3_628_800_000 as const).not.toEqualTypeOf<Ms<'--42d'>>();
+    expectTypeOf(3_628_800_000 as const).not.toEqualTypeOf<Ms<'42ds'>>();
+  });
+});
+
+describe('weeks', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0w'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0w'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0w'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000w'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0w'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000w'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(604_800_000 as const).toEqualTypeOf<Ms<'1w'>>();
+    expectTypeOf(-604_800_000 as const).not.toEqualTypeOf<Ms<'1w'>>();
+
+    expectTypeOf(604_800_000 as const).toEqualTypeOf<Ms<'001w'>>();
+    expectTypeOf(-604_800_000 as const).not.toEqualTypeOf<Ms<'001w'>>();
+
+    expectTypeOf(25_401_600_000 as const).toEqualTypeOf<Ms<'42w'>>();
+    expectTypeOf(-25_401_600_000 as const).not.toEqualTypeOf<Ms<'42w'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-604_800_000 as const).toEqualTypeOf<Ms<'-001w'>>();
+    expectTypeOf(604_800_000 as const).not.toEqualTypeOf<Ms<'-001w'>>();
+
+    expectTypeOf(-25_401_600_000 as const).toEqualTypeOf<Ms<'-42w'>>();
+    expectTypeOf(25_401_600_000 as const).not.toEqualTypeOf<Ms<'-42w'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(1_899_072_000 as const).toEqualTypeOf<Ms<'3.14w'>>();
+    expectTypeOf(-1_899_072_000 as const).not.toEqualTypeOf<Ms<'3.14w'>>();
+
+    expectTypeOf(-1_899_072_000 as const).toEqualTypeOf<Ms<'-3.14w'>>();
+    expectTypeOf(1_899_072_000 as const).not.toEqualTypeOf<Ms<'-3.14w'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(746_323_200_000 as const).toEqualTypeOf<Ms<'1234 w'>>();
+    expectTypeOf(746_323_200_000 as const).toEqualTypeOf<Ms<'1234 week'>>();
+    expectTypeOf(746_323_200_000 as const).toEqualTypeOf<Ms<'1234 weeks'>>();
+    expectTypeOf(746_323_200_000 as const).toEqualTypeOf<Ms<'1234   weeks'>>();
+    expectTypeOf(746_323_200_000 as const).toEqualTypeOf<Ms<'   1234   weeks   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'w'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--w'>>();
+    expectTypeOf(-25_401_600_000 as const).not.toEqualTypeOf<Ms<'--42w'>>();
+    expectTypeOf(25_401_600_000 as const).not.toEqualTypeOf<Ms<'42ws'>>();
+  });
+});
+
+describe('years', () => {
+  it('zero', () => {
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'0y'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'0y'>>();
+
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-0y'>>();
+    expectTypeOf(0 as const).toEqualTypeOf<Ms<'-000y'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-0y'>>();
+    expectTypeOf(1 as const).not.toEqualTypeOf<Ms<'-000y'>>();
+  });
+
+  it('integer', () => {
+    expectTypeOf(31_557_600_000 as const).toEqualTypeOf<Ms<'1y'>>();
+    expectTypeOf(-31_557_600_000 as const).not.toEqualTypeOf<Ms<'1y'>>();
+
+    expectTypeOf(31_557_600_000 as const).toEqualTypeOf<Ms<'001y'>>();
+    expectTypeOf(-31_557_600_000 as const).not.toEqualTypeOf<Ms<'001y'>>();
+
+    expectTypeOf(1_325_419_200_000 as const).toEqualTypeOf<Ms<'42y'>>();
+    expectTypeOf(-1_325_419_200_000 as const).not.toEqualTypeOf<Ms<'42y'>>();
+  });
+
+  it('negative integer', () => {
+    expectTypeOf(-31_557_600_000 as const).toEqualTypeOf<Ms<'-001y'>>();
+    expectTypeOf(31_557_600_000 as const).not.toEqualTypeOf<Ms<'-001y'>>();
+
+    expectTypeOf(-1_325_419_200_000 as const).toEqualTypeOf<Ms<'-42y'>>();
+    expectTypeOf(1_325_419_200_000 as const).not.toEqualTypeOf<Ms<'-42y'>>();
+  });
+
+  it('float', () => {
+    expectTypeOf(99_090_864_000 as const).toEqualTypeOf<Ms<'3.14y'>>();
+    expectTypeOf(-99_090_864_000 as const).not.toEqualTypeOf<Ms<'3.14y'>>();
+
+    expectTypeOf(-99_090_864_000 as const).toEqualTypeOf<Ms<'-3.14y'>>();
+    expectTypeOf(99_090_864_000 as const).not.toEqualTypeOf<Ms<'-3.14y'>>();
+  });
+
+  it('unit aliases', () => {
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234 y'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234 yr'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234 yrs'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234 year'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234 years'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'1234   years'>>();
+    expectTypeOf(38_942_078_400_000 as const).toEqualTypeOf<Ms<'   1234   years   '>>();
+  });
+
+  it('invalid', () => {
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'y'>>();
+    expectTypeOf(0 as const).not.toEqualTypeOf<Ms<'--y'>>();
+    expectTypeOf(-1_325_419_200_000 as const).not.toEqualTypeOf<Ms<'--42y'>>();
+    expectTypeOf(1_325_419_200_000 as const).not.toEqualTypeOf<Ms<'42ys'>>();
+  });
+});
