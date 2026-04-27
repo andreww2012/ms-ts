@@ -5,6 +5,7 @@
     "ms-ts": "0.0.1"
   },
   "changesets": [
+    "good-signs-train",
     "metal-hoops-beam"
   ]
 }

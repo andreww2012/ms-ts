@@ -1,3 +1,9 @@
+## 1.0.0-beta.1
+
+### Minor Changes
+
+- 7cffb34: Added JSDoc comments for the exported symbols (`Ms` type and `ms` function).
+
 ## 1.0.0-beta.0
 
 ### Major Changes
