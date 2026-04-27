@@ -1,0 +1,10 @@
+{
+  // cspell:disable
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "webpro.vscode-knip",
+  ],
+  // cspell:enable
+}
