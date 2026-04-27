@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andreww2012/ms-ts"
+    "url": "git+https://github.com/andreww2012/ms-ts.git"
   },
   "license": "MIT",
   "author": "andreww2012",
@@ -46,6 +46,7 @@
     "lint:types": "tsc --noEmit",
     "lint:types:go": "tsgo --noEmit",
     "lint:public-types": "attw --pack . --profile esm-only",
+    "lint:publint": "publint --strict",
     "lint": "nr format:check && nr lint:types:go && nr lint:eslint",
     "lint:fix": "nr format:fix && nr lint:eslint:fix",
     "knip": "knip --no-progress",
@@ -55,7 +56,7 @@
     "build": "tsdown --clean",
     "ch": "npx changeset add --message \"___REPLACE_ME___\"",
     "release": "changeset publish",
-    "prepublishOnly": "nr deps:dedupe-check && nr test && nr build && nr lint:public-types",
+    "prepublishOnly": "nr deps:dedupe-check && nr test && nr build && nr lint:public-types && nr lint:publint",
     "prepack": "nr build"
   },
   "devDependencies": {
@@ -81,6 +82,7 @@
     "lefthook": "2.1.6",
     "npm-check-updates": "22.0.1",
     "prettier": "3.8.3",
+    "publint": "0.3.18",
     "semver": "7.7.4",
     "ts-arithmetic": "0.1.1",
     "tsdown": "0.21.10",

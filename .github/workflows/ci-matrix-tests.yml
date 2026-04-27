@@ -7,14 +7,6 @@ on:
         type: number
 
 jobs:
-  test-config:
-    name: Test (Node ${{ inputs.node-version }})
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5.0.0
-      - uses: ./.github/actions/prepare
-        with:
-          node-version: ${{ inputs.node-version }}
   test-vitest:
     name: Test (Node ${{ inputs.node-version }})
     runs-on: ubuntu-24.04

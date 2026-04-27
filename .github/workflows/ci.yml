@@ -55,7 +55,7 @@ jobs:
       - uses: ./.github/actions/prepare
       - run: pnpm lint:eslint
   test:
-    name: Test (Node ${{ matrix.node-version }}
+    name: Test (Node ${{ matrix.node-version }})
     needs: install
     strategy:
       matrix:
@@ -64,15 +64,42 @@ jobs:
     with:
       node-version: ${{ matrix.node-version }}
   build:
-    name: Build (tsdown) & lint public types (attw)
+    name: Build
     needs: install
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5.0.0
       - uses: ./.github/actions/prepare
+      - run: pnpm build
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: dist
+          path: dist/
+  lint-attw:
+    name: Lint artifacts (attw)
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: dist
+          path: dist/
       - run: |
-          # `pnpm lint:public-types` uses `attw --pack` which internally calls `npm pack`.
-          # The runner's bundled npm may have broken internal deps, causing `npm pack` to fail.
-          # Pack via pnpm instead and pass the tarball directly to attw.
+          # `attw --pack` internally calls `npm pack`, which may fail due to broken internal deps
+          # in the runner's bundled npm. Pack via pnpm instead and pass the tarball directly to attw.
           pnpm pack --pack-destination /tmp
           pnpm exec attw /tmp/ms-ts-*.tgz --profile esm-only
+  lint-publint:
+    name: Lint artifacts (publint)
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: dist
+          path: dist/
+      - run: pnpm lint:publint
