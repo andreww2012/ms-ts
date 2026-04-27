@@ -1,3 +1,9 @@
+## 1.0.0-beta.2
+
+### Minor Changes
+
+- bd30e45: `type-fest` and `ts-arithmetic` packages are now inlined, leaving `ms-ts` with zero-dependencies
+
 ## 1.0.0-beta.1
 
 ### Minor Changes
