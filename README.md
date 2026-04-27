@@ -50,6 +50,7 @@ Minimum supported Node.js version is 22 (although it will very likely work in ol
 - If parsing fails, returns `never` as the result.
 - It does **not** perform an inverse conversion (number of milliseconds to a string with a unit).
 - Check more usage examples in the `test` directory of the repository.
+- Has **zero dependencies**: types from [`type-fest`](https://npmx.dev/type-fest) and [`ts-arithmetic`](https://npmx.dev/ts-arithmetic) are inlined directly into the package rather than declared as dependencies<sup>2</sup> because they are not supposed to change anyway.
 
 ## Recommended usage & pitfalls
 
@@ -81,6 +82,8 @@ const config = {
 ---
 
 <sup>1</sup> An identity function is a function that returns its first argument and does nothing else: `fn = (v) => v`.
+
+<sup>2</sup> Their copyright notices are preserved in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
 
 ## Contributors
 
