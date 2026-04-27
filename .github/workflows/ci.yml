@@ -63,6 +63,20 @@ jobs:
     uses: ./.github/workflows/ci-matrix-tests.yml
     with:
       node-version: ${{ matrix.node-version }}
+  coverage:
+    name: Coverage report
+    needs: install
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: ./.github/actions/prepare
+      - run: pnpm test:vitest:cov
+      - name: Report coverage
+        if: always() # Post the report even if the coverage threshold check failed
+        uses: davelosert/vitest-coverage-report-action@v2 # cspell:disable-line
   build:
     name: Build
     needs: install

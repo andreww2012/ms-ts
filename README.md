@@ -49,7 +49,7 @@ Minimum supported Node.js version is 22 (although it will very likely work in ol
 - Ignores leading zeroes.
 - If parsing fails, returns `never` as the result.
 - It does **not** perform an inverse conversion (number of milliseconds to a string with a unit).
-- Check more usage examples in the `test-d` directory of the repository.
+- Check more usage examples in the `test` directory of the repository.
 
 ## Recommended usage & pitfalls
 
