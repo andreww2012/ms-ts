@@ -2,7 +2,7 @@ import {eslintConfig} from 'eslint-config-un';
 
 export default eslintConfig({
   defaultConfigsStatus: 'misc-enabled',
-  ignores: ['CHANGELOG.md'],
+  ignores: ['CHANGELOG.md', 'THIRD_PARTY_NOTICES.md'],
   configs: {
     markdown: {
       configSentencesPerLine: {
@@ -15,6 +15,9 @@ export default eslintConfig({
     markdownPreferences: {
       ignores: ['LICENSE.md'],
       wordsToPreserveCasingOf: ['ms-ts'],
+    },
+    nodeDependencies: {
+      enforceAbsoluteVersion: true,
     },
     ts: {
       allowDefaultProject: ['*.config.*ts'],
