@@ -1,4 +1,4 @@
-import type {AllUnits, Ms} from './ms';
+import type {AllUnits, Ms} from './ms.ts';
 
 /**
  * Identity function that accepts a duration in milliseconds and returns it unchanged.
@@ -15,4 +15,4 @@ import type {AllUnits, Ms} from './ms';
  */
 export const ms = <S extends `${number}${AllUnits}`>(milliseconds: Ms<S>) => milliseconds;
 
-export type {Ms, AllUnits} from './ms';
+export type {Ms, AllUnits} from './ms.ts';

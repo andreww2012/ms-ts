@@ -1,17 +1,24 @@
-name: Check code
+name: Check code (+ Publish)
 on:
   pull_request:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write # Required for Trusted Publishing
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   install:
     name: Install dependencies
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
 
   knip:
@@ -19,50 +26,60 @@ jobs:
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
       - run: pnpm knip
+
   spellcheck:
     name: Spellcheck (cspell)
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
-      - run: pnpm spellcheck
+      - run: pnpm check:spelling
+
   formatting:
-    name: Formatting check (prettier)
+    name: Formatting check (oxfmt)
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
-      - run: pnpm format:check
+      - run: pnpm check:format
+
   typecheck:
     name: Typecheck (tsgo)
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
-      - run: pnpm lint:types:go
+      - run: pnpm ts
+
   eslint:
     name: ESLint
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
-      - run: pnpm lint:eslint
+      - run: pnpm eslint
+
   test:
     name: Test (Node ${{ matrix.node-version }})
     needs: install
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        node-version: [22, 24, 25]
-    uses: ./.github/workflows/ci-matrix-tests.yml
-    with:
-      node-version: ${{ matrix.node-version }}
+        node-version: [22, 24, 26]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/prepare
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: pnpm test:vitest
+
   coverage:
     name: Coverage report
     needs: install
@@ -71,49 +88,58 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
       - run: pnpm test:vitest:cov
       - name: Report coverage
         if: always() # Post the report even if the coverage threshold check failed
-        uses: davelosert/vitest-coverage-report-action@v2 # cspell:disable-line
+        uses: davelosert/vitest-coverage-report-action@c4bbc33a89b7ace0e63d35f1f7d4bcee31155a73 # v2.13.0 cspell:disable-line
+
   build:
-    name: Build
+    name: Build (tsdown) & lint package (attw, publint)
     needs: install
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/prepare
-      - run: pnpm build
-      - uses: actions/upload-artifact@v7.0.1
-        with:
-          name: dist
-          path: dist/
-  lint-attw:
-    name: Lint artifacts (attw)
-    needs: build
-    runs-on: ubuntu-24.04
+      - run: pnpm check:package
+
+  release-main:
+    name: Create release PR _OR_ Publish on merge
+    needs:
+      - knip
+      - spellcheck
+      - formatting
+      - typecheck
+      - eslint
+      - test
+      - coverage
+      - build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5.0.0
-      - uses: ./.github/actions/prepare
-      - uses: actions/download-artifact@v8.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          name: dist
-          path: dist/
-      - run: |
-          # `attw --pack` internally calls `npm pack`, which may fail due to broken internal deps
-          # in the runner's bundled npm. Pack via pnpm instead and pass the tarball directly to attw.
-          pnpm pack --pack-destination /tmp
-          pnpm exec attw /tmp/ms-ts-*.tgz --profile esm-only
-  lint-publint:
-    name: Lint artifacts (publint)
-    needs: build
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5.0.0
+          fetch-depth: 0
       - uses: ./.github/actions/prepare
-      - uses: actions/download-artifact@v8.0.1
+      # Based on https://github.com/changesets/action/issues/303#issuecomment-1888167265
+      - name: Capture new release version
+        env:
+          # For the changelog generator, the action passes it on its own
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Exits with 1 if there are no unreleased changesets,
+          # in which case the version stays the same
+          pnpm changeset version || true
+          echo "NEW_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+          git restore .
+          # `changeset version` may also create new files (like `CHANGELOG.md` on the first release)
+          git clean -fdq
+      - name: Create release / Publish
+        id: changesets
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          name: dist
-          path: dist/
-      - run: pnpm lint:publint
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          publish-script: pnpm release
+          pr-title: 'chore: release v${{ env.NEW_VERSION }}'
+          commit-message: 'chore: release v${{ env.NEW_VERSION }}'

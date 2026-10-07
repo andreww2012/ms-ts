@@ -1,4 +1,4 @@
-import {ms} from '../src/index';
+import {ms} from '../src/index.ts';
 
 describe('ms', () => {
   it('returns the passed milliseconds value unchanged', () => {

@@ -1,5 +1,5 @@
 /* eslint-disable un/no-multiple-consecutive-spaces */
-import type {Ms} from '../src/ms';
+import type {Ms} from '../src/ms.ts';
 
 describe('milliseconds', () => {
   it('zero', () => {
@@ -16,6 +16,7 @@ describe('milliseconds', () => {
   });
 
   it('float', () => {
+    // eslint-disable-next-line unicorn/prefer-math-constants -- Not an approximation of π
     expectTypeOf(3.14 as const).toEqualTypeOf<Ms<'3.14ms'>>();
     expectTypeOf(4 as const).not.toEqualTypeOf<Ms<'3.14ms'>>();
     expectTypeOf(3 as const).not.toEqualTypeOf<Ms<'3.14ms'>>();

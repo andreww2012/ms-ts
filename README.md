@@ -31,7 +31,7 @@ npm i ms-ts
 yarn add ms-ts
 ```
 
-Minimum supported Node.js version is 22 (although it will very likely work in older versions).
+Supported Node.js versions are 22.23.1+, 24.18.0+ and 26.4.0+ (although it will very likely work in older versions).
 
 ## Features
 

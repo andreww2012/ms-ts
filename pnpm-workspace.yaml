@@ -1,16 +1,44 @@
-blockExoticSubdeps: true # cspell:disable-line
+# `ncu` only updates catalogs in workspace mode, which needs this
+packages:
+  - ./
+
+saveExact: true
+autoDedupe: true
+saveTypes: true
 
 minimumReleaseAge: 960 # 16 hours in minutes
-# minimumReleaseAgeExclude: []
+minimumReleaseAgeExclude: # []
+  - '@devframes/agentic@1.2.3' # cspell:disable-line
+  - devframe@1.2.3
+  - electron-to-chromium@1.5.449
+  - eslint-config-un@1.0.0-rc.4
+  - tinybench@6.2.1
+minimumReleaseAgeExcludePrune: true
 
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200 # 30 days in minutes
+trustPolicyExclude: []
 
-strictDepBuilds: true
+audit:
+  ignore: # []
+    - GHSA-ch52-4w7c-c8xp # `http-cache-semantics` from `eslint-config-un` has no patched version yet
+  ignorePrune: true
+
 allowBuilds:
-  esbuild: false # Not a direct dependency
-  lefthook: true
-  unrs-resolver: false # cspell:disable-line
+  lefthook@2.1.17: true
 
+  esbuild: false
+  unrs-resolver: false
 
-# overrides: {}
+dedupePeers: true
+strictPeerDependencies: false
+
+catalogs:
+  format:
+    oxfmt: 0.72.0
+
+overrides:
+  # Format Markdown code blocks with the same oxfmt version as all other files
+  eslint-plugin-format>oxfmt: 'catalog:format'
+  # Only used by its Prettier rule. Otherwise, `eslint-config-un` would think Prettier is used
+  eslint-plugin-format>prettier: '-'

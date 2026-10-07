@@ -8,7 +8,6 @@ export default defineConfig({
     typecheck: {
       enabled: true,
       checker: 'tsc',
-      tsconfig: './test/tsconfig.json',
       include: ['test/**/*.test-d.ts'],
     },
     coverage: {

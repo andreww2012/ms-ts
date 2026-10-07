@@ -1,9 +1,11 @@
+// Based on https://www.totaltypescript.com/tsconfig-cheat-sheet
 {
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
     },
 
+    /* Base Options: */
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",
@@ -12,17 +14,19 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "types": [],
+    "rewriteRelativeImportExtensions": true,
+    "types": ["node", "vitest/globals"],
 
+    /* Strictness */
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    "declaration": true,
-    "module": "preserve",
-    "noEmit": true,
+    /* If transpiling with TypeScript: */
+    "module": "NodeNext",
+    "outDir": "dist",
+    "sourceMap": true,
 
-    "lib": ["es2022"]
-  },
-
-  "include": ["src"],
+    /* If your code doesn't run in the DOM: */
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"]
+  }
 }
