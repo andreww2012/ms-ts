@@ -1,3 +1,9 @@
+## 1.1.0
+
+### Minor Changes
+
+- 523b06f: Supported Node.js versions are now `^22.23.1 || ^24.18.0 || >=26.4.0`. `ms-ts/package.json` is now exported, and the `main` field is removed
+
 ## 1.0.0
 
 ### Major Changes
