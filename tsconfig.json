@@ -14,17 +14,16 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "rewriteRelativeImportExtensions": true,
     "types": ["node", "vitest/globals"],
 
     /* Strictness */
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    /* If transpiling with TypeScript: */
+    /* NOT transpiling with TypeScript, as it doesn't rewrite `.ts` in imports like `@/foo.ts`: */
     "module": "NodeNext",
-    "outDir": "dist",
-    "sourceMap": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
 
     /* If your code doesn't run in the DOM: */
     "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"]

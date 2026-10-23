@@ -1,44 +1,43 @@
-# `ncu` only updates catalogs in workspace mode, which needs this
+# cspell:ignore modelcontextprotocol
+
+# Changesets only uses scoped git tags in monorepos, which needs this
 packages:
   - ./
 
 saveExact: true
 autoDedupe: true
 saveTypes: true
+lockfile:
+  # Records `autoDedupe`, so that installs don't resolve the lockfile again
+  includeResolutionSettings: true
 
 minimumReleaseAge: 960 # 16 hours in minutes
 minimumReleaseAgeExclude: # []
-  - '@devframes/agentic@1.2.3' # cspell:disable-line
-  - devframe@1.2.3
-  - electron-to-chromium@1.5.449
-  - eslint-config-un@1.0.0-rc.4
-  - tinybench@6.2.1
+  - '@changesets/format@0.1.3'
+  - '@modelcontextprotocol/client@2.4.0'
+  - '@modelcontextprotocol/core@2.4.0'
+  - '@modelcontextprotocol/server@2.4.0'
+  - baseline-browser-mapping@2.11.32
+  - crossws@0.4.16
+  - electron-to-chromium@1.5.464
+  - tsdown@0.23.2
 minimumReleaseAgeExcludePrune: true
 
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200 # 30 days in minutes
-trustPolicyExclude: []
+trustPolicyExclude: # []
+  # Published by hand after its release workflow failed. Same code as v2.2.1
+  - lefthook@2.2.2
 
 audit:
-  ignore: # []
-    - GHSA-ch52-4w7c-c8xp # `http-cache-semantics` from `eslint-config-un` has no patched version yet
+  ignore: []
   ignorePrune: true
 
 allowBuilds:
-  lefthook@2.1.17: true
+  lefthook@2.2.2: true
 
   esbuild: false
   unrs-resolver: false
 
 dedupePeers: true
 strictPeerDependencies: false
-
-catalogs:
-  format:
-    oxfmt: 0.72.0
-
-overrides:
-  # Format Markdown code blocks with the same oxfmt version as all other files
-  eslint-plugin-format>oxfmt: 'catalog:format'
-  # Only used by its Prettier rule. Otherwise, `eslint-config-un` would think Prettier is used
-  eslint-plugin-format>prettier: '-'
