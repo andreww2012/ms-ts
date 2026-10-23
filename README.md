@@ -1,6 +1,4 @@
-# ms-ts
-
-[![package version and a link to the npmx page](https://img.shields.io/npm/v/ms-ts)](https://npmx.dev/ms-ts)
+# ms-ts [![package version and a link to the npmx page](https://img.shields.io/npm/v/ms-ts)](https://npmx.dev/ms-ts)
 
 An alternative to [the `ms` library](https://npmx.dev/ms) in the type world: exposes a `Ms` utility type which, for a string in `ms` time format, produces the number of milliseconds as a type.
 
@@ -23,15 +21,13 @@ const config = {
 
 ## Installation
 
-For pnpm, npm & yarn users respectively:
-
 ```sh
 pnpm i ms-ts
-npm i ms-ts
-yarn add ms-ts
 ```
 
-Supported Node.js versions are 22.23.1+, 24.18.0+ and 26.4.0+ (although it will very likely work in older versions).
+Replace `pnpm i` with the installation command of your package manager.
+
+Node.js 22.23.1+, 24.18.0+ or 26.4.0+ is required (although it will very likely work in older versions).
 
 ## Features
 
@@ -43,11 +39,13 @@ Supported Node.js versions are 22.23.1+, 24.18.0+ and 26.4.0+ (although it will 
   - `d`, `day(s)`
   - `w`, `week(s)`
   - `y`, `yr(s)`, `year(s)` (**365.25** days, as in the [original implementation](https://github.com/vercel/ms/blob/78ce59eab01c197b9133bf9752ae01fbc11f4976/src/index.ts#LL7C15-L7C21))
-- Unit names are case-insensitive (e.g. `'42MS'`, `'42S'` are valid).
+- Unit names are case-insensitive (e.g. `'42MS'`, `'42Ms'`, `'42 Hours'` are valid).
+- A number without a unit is in milliseconds (e.g. `'100'` is `100`), like in `ms`.
 - Supports negative & floating point numbers.
 - Ignores whitespace at the beginning and end of the input string, between the sign and the number, and between the number and the unit.
 - Ignores leading zeroes.
 - If parsing fails, returns `never` as the result.
+- Very large and very small results (like `'100000000000y'` or `'0.0000001ms'`) resolve to `number`, as they can't be computed as exact literal types.
 - It does **not** perform an inverse conversion (number of milliseconds to a string with a unit).
 - Check more usage examples in the `test` directory of the repository.
 - Has **zero dependencies**: types from [`type-fest`](https://npmx.dev/type-fest) and [`ts-arithmetic`](https://npmx.dev/ts-arithmetic) are inlined directly into the package rather than declared as dependencies<sup>2</sup> because they are not supposed to change anyway.
@@ -78,6 +76,8 @@ const config = {
   duration1: ms<'42m'>(2_520_000), // Forces you to pass `2_520_000`
 };
 ```
+
+Calling it without the generic parameter (`ms(2_520_000)`) is an error.
 
 ---
 

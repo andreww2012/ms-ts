@@ -1,4 +1,4 @@
-import type {AllUnits, Ms} from './ms.ts';
+import type {Ms} from './ms.ts';
 
 /**
  * Identity function that accepts a duration in milliseconds and returns it unchanged.
@@ -13,6 +13,6 @@ import type {AllUnits, Ms} from './ms.ts';
  * @example <caption>Negative and floating-point durations:</caption>
  * const duration = ms<'-3.14d'>(-271_296_000);
  */
-export const ms = <S extends `${number}${AllUnits}`>(milliseconds: Ms<S>) => milliseconds;
+export const ms = <S extends string>(milliseconds: Ms<S>) => milliseconds;
 
-export type {Ms, AllUnits} from './ms.ts';
+export type {AllUnits, Ms} from './ms.ts';
