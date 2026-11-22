@@ -5,7 +5,7 @@ import type {WhitespaceCharacter} from 'type-fest';
 
 type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
-type OrPlural<T extends string> = T | `${T}s`;
+type OrPlural<Word extends string> = Word | `${Word}s`;
 
 // Same as `Trim` from `type-fest`, but without unwrapping branded strings: that pulls in many
 // other types and makes the bundled types much bigger
@@ -29,7 +29,9 @@ type PostfixesToMilliseconds = Record<'ms' | OrPlural<'msec' | 'millisecond'>, 1
   Record<'h' | OrPlural<'hr' | 'hour'>, 3_600_000> &
   Record<'d' | OrPlural<'day'>, 86_400_000> &
   Record<'w' | OrPlural<'week'>, 604_800_000> &
-  Record<'y' | OrPlural<'yr' | 'year'>, 31_557_600_000>; // 365.25 days (see https://github.com/vercel/ms/blob/78ce59eab01c197b9133bf9752ae01fbc11f4976/src/index.ts#LL7C15-L7C21)
+  // 365.25 days, like in `ms`:
+  // https://github.com/vercel/ms/blob/78ce59eab01c197b9133bf9752ae01fbc11f4976/src/index.ts#L7
+  Record<'y' | OrPlural<'yr' | 'year'>, 31_557_600_000>;
 
 type AllUnitsLowercase = keyof PostfixesToMilliseconds;
 export type AllUnits = AllUnitsLowercase | Uppercase<AllUnitsLowercase>;
@@ -44,23 +46,23 @@ type UnitToMilliseconds<Unit extends string> = Unit extends ''
 /* Number parsers */
 
 type ParseDigits<
-  T extends string,
+  Input extends string,
   Digits extends string = '',
-> = T extends `${infer First extends Digit}${infer Rest}`
+> = Input extends `${infer First extends Digit}${infer Rest}`
   ? ParseDigits<Rest, `${Digits}${First}`>
-  : [Digits, T];
+  : [Digits, Input];
 
-type NormalizeInteger<T extends string> = T extends `0${infer Rest}`
+type NormalizeInteger<Integer extends string> = Integer extends `0${infer Rest}`
   ? NormalizeInteger<Rest>
-  : T extends ''
+  : Integer extends ''
     ? '0'
-    : T;
+    : Integer;
 
-type NormalizeFraction<T extends string> = T extends `${infer Rest}0`
+type NormalizeFraction<Fraction extends string> = Fraction extends `${infer Rest}0`
   ? NormalizeFraction<Rest>
-  : T extends ''
+  : Fraction extends ''
     ? ''
-    : `.${T}`;
+    : `.${Fraction}`;
 
 // Only numbers written the way JS writes them (`0.5`, not `00.50`) are inferred as literals
 type ToNumber<
@@ -68,11 +70,15 @@ type ToNumber<
   Integer extends string,
   Fraction extends string,
   Unsigned extends string = `${NormalizeInteger<Integer>}${NormalizeFraction<Fraction>}`,
-> = Unsigned extends '0' ? 0 : `${Sign}${Unsigned}` extends `${infer N extends number}` ? N : never;
+> = Unsigned extends '0'
+  ? 0
+  : `${Sign}${Unsigned}` extends `${infer Value extends number}`
+    ? Value
+    : never;
 
 // Returns the number and the rest of the string. Like in `ms`, `.5` is valid and `1.` is not
-type ParseUnsigned<T extends string, Sign extends '' | '-'> =
-  ParseDigits<T> extends [infer Integer extends string, infer Rest extends string]
+type ParseUnsigned<Input extends string, Sign extends '' | '-'> =
+  ParseDigits<Input> extends [infer Integer extends string, infer Rest extends string]
     ? Rest extends `.${infer AfterDot}`
       ? ParseDigits<AfterDot> extends [infer Fraction extends string, infer Unit extends string]
         ? Fraction extends ''
@@ -84,27 +90,25 @@ type ParseUnsigned<T extends string, Sign extends '' | '-'> =
         : [ToNumber<Sign, Integer, ''>, Rest]
     : never;
 
-type ParseNumber<T extends string> = T extends `-${infer Rest}`
+type ParseNumber<Input extends string> = Input extends `-${infer Rest}`
   ? ParseUnsigned<Trim<Rest>, '-'>
-  : ParseUnsigned<T, ''>;
+  : ParseUnsigned<Input, ''>;
 
 /* Internal type */
 
 // Distributes over a union of parsed inputs, so that each number stays with its own unit
-type MsInternal<T> = T extends [infer Value extends number, infer Unit extends string]
+type MsInternal<Parsed> = Parsed extends [infer Value extends number, infer Unit extends string]
   ? Multiply<Value, UnitToMilliseconds<Lowercase<Trim<Unit>>>>
   : never;
 
 /* PUBLIC TYPE */
 
 /**
- * Type which receives a duration string in [`ms` format](https://npmx.dev/ms) and
- * evaluates to the duration in milliseconds.
+ * Converts a duration string in [`ms` format](https://npmx.dev/ms) to milliseconds.
  *
- * Handles integer and floating point numbers, leading and trailing whitespaces,
- * negative numbers.
+ * Handles integer and floating-point numbers, leading and trailing whitespace, negative numbers.
  * A number without a unit is in milliseconds.
- * @example <caption>Basic usage — declare the type after a variable name:</caption>
+ * @example <caption>Declare the type after a variable name:</caption>
  * const duration: Ms<'42s'> = 42_000;
  * @example <caption>Use `satisfies` (not `as`!) to assert a type in expressions:</caption>
  * const config = {
@@ -130,9 +134,9 @@ type MsInternal<T> = T extends [infer Value extends number, infer Unit extends s
  * type B = Ms<'3.14d'>;     // 271_296_000
  * type C = Ms<'  010ms  '>; // 10
  * @example <caption>Invalid inputs resolve to `never`:</caption>
- * type A = Ms<'s'>;      // never — missing number
- * type B = Ms<'--42ms'>; // never — double minus
- * type C = Ms<'42mss'>;  // never — unknown unit
- * type D = Ms<'1.h'>;    // never — no digits after the dot
+ * type A = Ms<'s'>;      // never (missing number)
+ * type B = Ms<'--42ms'>; // never (double minus)
+ * type C = Ms<'42mss'>;  // never (unknown unit)
+ * type D = Ms<'1.h'>;    // never (no digits after the dot)
  */
-export type Ms<T extends string> = MsInternal<ParseNumber<Trim<T>>>;
+export type Ms<TimeString extends string> = MsInternal<ParseNumber<Trim<TimeString>>>;

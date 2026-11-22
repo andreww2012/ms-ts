@@ -6,6 +6,9 @@ export default eslintConfig({
   mode: 'lib',
   defaultConfigsStatus: 'misc-enabled',
   configs: {
+    eslintComments: {
+      requireDescriptions: true,
+    },
     format: {
       files: [],
       configFencedCodeBlocks: {

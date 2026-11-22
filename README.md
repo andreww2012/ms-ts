@@ -81,13 +81,13 @@ Calling it without the generic parameter (`ms(2_520_000)`) is an error.
 
 ---
 
-<sup>1</sup> An identity function is a function that returns its first argument and does nothing else: `fn = (v) => v`.
+<sup>1</sup> An identity function is a function that returns its first argument and does nothing else: `fn = (value) => value`.
 
 <sup>2</sup> Their copyright notices are preserved in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
 
 ## Contributors
 
-<!-- eslint-disable markdown-preferences/padding-line-between-blocks, markdown/require-alt-text -->
+<!-- eslint-disable markdown-preferences/padding-line-between-blocks, markdown/require-alt-text -- The list below is generated -->
 <!-- cspell:disable -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -115,6 +115,6 @@ Calling it without the generic parameter (`ms(2_520_000)`) is an error.
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-<!-- eslint-enable markdown-preferences/padding-line-between-blocks, markdown/require-alt-text -->
+<!-- eslint-enable markdown-preferences/padding-line-between-blocks, markdown/require-alt-text -- End of the generated list -->
 
 <!-- cspell:enable -->
