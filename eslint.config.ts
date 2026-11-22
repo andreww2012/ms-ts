@@ -38,5 +38,4 @@ export default eslintConfig({
       vitestGlobalsImporting: 'disallow',
     },
   },
-  extraConfigs: [],
 });

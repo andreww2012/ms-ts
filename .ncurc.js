@@ -5,7 +5,6 @@ export default ncuConfig({
   cwd: import.meta.dirname,
   targets: {
     // Their `latest` dist-tag lags behind the prerelease channel we actually follow
-    'all-contributors-cli': 'greatest',
     'eslint-config-un': 'greatest',
   },
 });

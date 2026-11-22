@@ -3,6 +3,9 @@ import {defineConfig} from 'tsdown';
 export default defineConfig({
   entry: 'src/index.ts',
   dts: true,
+  unbundle: true,
+  publint: {strict: true},
+  attw: {level: 'error'},
   exports: true,
   deps: {
     // Their types are inlined, so that the package has no dependencies
