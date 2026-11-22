@@ -1,3 +1,9 @@
+## 1.3.0
+
+### Minor Changes
+
+- [`2086a53`](https://github.com/andreww2012/ms-ts/commit/2086a530227a79ae1ddeb43485c8c57951f8cd10) - Lowered the required Node.js version to `>=22`
+
 ## 1.2.0
 
 ### Minor Changes
