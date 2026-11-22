@@ -33,6 +33,12 @@ export default eslintConfig({
     },
     nodeDependencies: {
       enforceAbsoluteVersion: true,
+      overrides: {
+        'node-dependencies/compat-engines': (severity, options) => ({
+          severity,
+          options: [{...options?.[0], devDependencies: false}],
+        }),
+      },
     },
     vitest: {
       vitestGlobalsImporting: 'disallow',
