@@ -17,10 +17,6 @@ minimumReleaseAgeExclude: # []
   - '@modelcontextprotocol/client@2.4.0'
   - '@modelcontextprotocol/core@2.4.0'
   - '@modelcontextprotocol/server@2.4.0'
-  - baseline-browser-mapping@2.11.32
-  - crossws@0.4.16
-  - electron-to-chromium@1.5.464
-  - tsdown@0.23.2
 minimumReleaseAgeExcludePrune: true
 
 trustPolicy: no-downgrade
@@ -41,3 +37,7 @@ allowBuilds:
 
 dedupePeers: true
 strictPeerDependencies: false
+
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-markdown-preferences@0.43.0>@eslint/markdown: '>=7.4.0'

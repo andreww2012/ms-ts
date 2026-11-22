@@ -555,6 +555,7 @@ describe('whitespace', () => {
     expectTypeOf(-42 as const).toEqualTypeOf<Ms<'-\t42ms'>>();
     expectTypeOf(42 as const).toEqualTypeOf<Ms<'42\tms'>>();
     expectTypeOf(1.5 as const).toEqualTypeOf<Ms<'1.5\tms'>>();
+    expectTypeOf(42 as const).toEqualTypeOf<Ms<'\u{3000} 42ms\u{A0}'>>();
   });
 
   it('invalid', () => {

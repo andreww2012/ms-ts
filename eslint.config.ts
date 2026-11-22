@@ -8,15 +8,16 @@ export default eslintConfig({
   configs: {
     format: {
       files: [],
-      configFencedCodeBlocks: true,
-      formatter: [
-        'oxfmt',
-        {
-          bracketSpacing: oxfmtConfig.bracketSpacing,
-          printWidth: oxfmtConfig.printWidth,
-          singleQuote: oxfmtConfig.singleQuote,
-        },
-      ],
+      configFencedCodeBlocks: {
+        formatter: [
+          'oxfmt',
+          {
+            bracketSpacing: oxfmtConfig.bracketSpacing,
+            printWidth: oxfmtConfig.printWidth,
+            singleQuote: oxfmtConfig.singleQuote,
+          },
+        ],
+      },
     },
     import: {
       requireModuleExtensions: true,
@@ -26,15 +27,13 @@ export default eslintConfig({
     },
     markdownPreferences: {
       ignores: ['LICENSE.md'],
-      wordsToPreserveCasingOf: ['ms-ts'],
     },
     nodeDependencies: {
       enforceAbsoluteVersion: true,
     },
-
-    // False positives:
-    rxjs: false,
-    zod: false,
+    vitest: {
+      vitestGlobalsImporting: 'disallow',
+    },
   },
   extraConfigs: [],
 });

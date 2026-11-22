@@ -1,11 +1,25 @@
 import type {Multiply} from 'ts-arithmetic';
-import type {Trim} from 'type-fest';
+import type {WhitespaceCharacter} from 'type-fest';
 
 /* Utility types */
 
 type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 type OrPlural<T extends string> = T | `${T}s`;
+
+// Same as `Trim` from `type-fest`, but without unwrapping branded strings: that pulls in many
+// other types and makes the bundled types much bigger
+type TrimLeft<Value extends string> = Value extends `${infer First}${infer Rest}`
+  ? First extends WhitespaceCharacter
+    ? TrimLeft<Rest>
+    : Value
+  : Value;
+
+type TrimRight<Value extends string> = Value extends `${infer Rest}${WhitespaceCharacter}`
+  ? TrimRight<Rest>
+  : Value;
+
+type Trim<Value extends string> = TrimLeft<TrimRight<Value>>;
 
 /* Units */
 
